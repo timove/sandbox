@@ -1,0 +1,176 @@
+<!doctype html>
+<!-- version 0.9, timov-->
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>timov Signal Angel Templater</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+        <script>
+            var schedules = new Object();
+            var getJSON = function (url, callback) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", url, true);
+                xhr.responseType = "json";
+                xhr.onload = function () {
+                    var status = xhr.status;
+                    if (status === 200) {
+                        callback(null, xhr.response);
+                    } else {
+                        callback(status, xhr.response);
+                    }
+                };
+                xhr.send();
+            };
+
+            var copytoclipboard = function (src) {
+                var pre = src.parentNode.querySelector("pre");
+                navigator.clipboard.writeText(pre.textContent);
+            };
+
+            var stampTalk = function (talk) {
+                var txtAngleHandleMatrix = "timove";
+                var txtSpeakers = talk.persons
+                    .map((p) => p.public_name)
+                    .join(", ");
+                const roomToFediHashtag = [
+                    { room: "Saal 1", hashtag: "#38C3eins" },
+                    { room: "Saal GLITCH", hashtag: "#38C3glitch" },
+                    { room: "Saal ZIGZAG", hashtag: "#38C3zigzag" },
+                    { room: "Stage HUFF", hashtag: "#38C3huff" },
+                    { room: "Stage YELL", hashtag: "#38C3yell" },
+                ];
+                var txtFediHashtag = roomToFediHashtag.find(
+                    (r) => r.room === talk.room,
+                ).hashtag;
+
+                talk.saIntroEn = `
+Hello and welcome to the lecture "**${talk.title}**" by *${txtSpeakers}* - *${talk.url}*
+
+I'm your Signal Angel for this talk. If you have questions please mention me (prefix your question with "**@${txtAngleHandleMatrix}**: ") and I'll relay them to the speaker during the Q&A. Also please tell me your questions during the talk and not all at the end so it's easier for me to catch them.
+
+You can participate through this chat room, and can you ask your questions using the Fediverse using the tag **${txtFediHashtag}** in your toots.
+
+That’s all. Thank you in advance and enjoy the congress wherever you are!`;
+
+                talk.saIntroDe = `
+Hallo und willkommen zum Vortrag "**${talk.title}**" gehalten von *${txtSpeakers}* - *${talk.url}*
+
+Ich bin der Signal Angel für diesen Talk. Wenn ihr Fragen habt sagt mir Bescheid (schreibt ein "**@${txtAngleHandleMatrix}**: " davor) und ich reiche die Fragen weiter während der Fragerunde am Ende des Vortrags. Bitte stellt eure Fragen direkt wenn ihr sie habt und nicht alle auf einmal am Ende, dann ist das für mich einfacher.
+
+Ich danke euch und wünsche viel Spaß mit dem Talk!
+
+Ihr könnt außerdem auch Fragen über das Fediverse stellen, indem ihr den Toot mit dem Tag **${txtFediHashtag}** verseht.`;
+
+                talk.saTranslationAdviceEn = `
+Please find live translation/interpretation of #38C3 talks by the excellent @c3lingo team on [https://streaming.c3lingo.org/](https://streaming.c3lingo.org/)
+`;
+
+                talk.saEndingEn = `
+Thank you for listening and/or participating at the talk "**${talk.title}**" in #38C3 *${talk.room}* wherever you are!
+`;
+
+                talk.saEndingDe = `
+Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.title}**" auf dem #38c3 in *${talk.room}*, wo immer ihr seid! 
+`;
+
+                return talk;
+            };
+
+            var renderData = function () {
+                var days = schedules.main.schedule.conference.days.concat(
+                    schedules.community.schedule.conference.days,
+                );
+                var searchTerm = document.getElementById("searchInput").value;
+                var htmlAll = days
+                    .map((d) =>
+                        Object.values(d.rooms)
+                            .map((r) =>
+                                r
+                                    .filter((t) =>
+                                        t.title
+                                            .toLowerCase()
+                                            .includes(searchTerm.toLowerCase()),
+                                    )
+                                    .map(
+                                        (t) => `
+                                        <h1>${t.title}</h1>
+                                        <h3>Intro, Matrix, en</h3>
+                                        <div>
+                                          <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
+                                          <pre>${stampTalk(t).saIntroEn}</pre>
+                                        </div>
+                                        <h3>Intro, Matrix, de</h3>
+                                        <div>
+                                          <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
+                                          <pre>${stampTalk(t).saIntroDe}</pre>
+                                        </div>
+                                        <h3>Ending, Matrix, en</h3>
+                                        <div>
+                                          <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
+                                          <pre>${stampTalk(t).saEndingEn}</pre>
+                                        </div>
+                                        <h3>Ending, Matrix, de</h3>
+                                        <div>
+                                          <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
+                                          <pre>${stampTalk(t).saEndingDe}</pre>
+                                        </div>
+
+                                        `,
+                                    )
+                                    .join(""),
+                            )
+                            .join(""),
+                    )
+                    .join("");
+
+                document.getElementById("renderTarget").innerHTML = htmlAll;
+            };
+
+            function debounce(func, timeout = 300) {
+                let timer;
+                return (...args) => {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        func.apply(this, args);
+                    }, timeout);
+                };
+            }
+            var triggerSearch = debounce(() => {
+                renderData();
+            });
+
+            getJSON(
+                "https://fahrplan.events.ccc.de/congress/2024/fahrplan/schedule/export/schedule.json",
+                function (err, data) {
+                    if (err !== null) {
+                        alert("Something went wrong: " + err);
+                    } else schedules.main = data;
+                },
+            );
+            getJSON(
+                "https://cfp.cccv.de/38c3-community-stages/schedule/export/schedule.json",
+                function (err, data) {
+                    if (err !== null) {
+                        alert("Something went wrong: " + err);
+                        // } else renderData(data);
+                    } else schedules.community = data;
+                },
+            );
+        </script>
+    </head>
+    <body>
+        <h1>timov Signal Angel Templater</h1>
+        <form>
+            <label>Search titles: </label>
+            <input
+                id="searchInput"
+                type="text"
+                onkeyup="triggerSearch();"
+                autofocus
+            />
+        </form>
+        <hr />
+        <div id="renderTarget"></div>
+    </body>
+</html>
