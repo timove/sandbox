@@ -7,7 +7,10 @@
         <meta name="viewport" content="width=device-width,initial-scale=1" />
 
         <script>
-            var schedules = new Object();
+            var schedules = {
+                main: { schedule: { conference: [] } },
+                community: { schedule: { conference: [] } },
+            };
 
             const roomToFediHashtag = [
                 { room: "Saal 1", hashtag: "#38C3eins" },
@@ -46,6 +49,7 @@
                 var txtFediHashtag = roomToFediHashtag.find(
                     (r) => r.room === talk.room,
                 ).hashtag;
+
                 var txtLanguageHintEn = "";
                 if (talk.language === "en") {
                     txtLanguageHintEn = ". This talk will be in English. ";
@@ -53,6 +57,7 @@
                 if (talk.language === "de") {
                     txtLanguageHintEn = ". This talk will be in German. ";
                 }
+
                 var txtLanguageHintDe = "";
                 if (talk.language === "en") {
                     txtLanguageHintDe =
@@ -158,6 +163,7 @@
             }
             var triggerSearch = debounce(() => {
                 renderData();
+                alterAddressForPersistence();
             });
 
             function findGetParameter(parameterName) {
@@ -174,12 +180,16 @@
                 return result;
             }
 
-            // function alterAddressForPersistence() {
-            //     let stateObj = { id: "100" };
-
-            //     window.history.pushState(stateObj, "Page 2");
-            //     // window.history.pushState(stateObj, "Page 2", "/page2.html");
-            // }
+            function alterAddressForPersistence() {
+                window.history.replaceState(
+                    null,
+                    null,
+                    "?matrixhandle=" +
+                        encodeURIComponent(
+                            document.getElementById("matrixHandleInput").value,
+                        ),
+                );
+            }
 
             window.onload = function () {
                 var matrixhandleFromGet = findGetParameter("matrixhandle");
@@ -240,7 +250,7 @@
     <body>
         <h1>timov Signal Angel Templater</h1>
         <div>
-            Version 0.9.7, released under GPL-2.0, source at
+            Version 0.9.8, released under GPL-2.0, source at
             <a
                 href="https://github.com/timove/sandbox/blob/main/signalangel.html"
                 >GitHub</a
@@ -255,10 +265,6 @@
                     value="timove"
                     onkeyup="triggerSearch();"
                 />
-                <span>
-                    you can prefill this for bookmarks using the GET Parameter
-                    matrixhandle</span
-                >
             </div>
             <div>
                 <label>Search titles: </label>
