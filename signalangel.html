@@ -64,34 +64,34 @@
                 }
 
                 talk.saIntroEn = `
-Hello and welcome to the lecture "**${talk.title}**" by *${txtSpeakers}* - *${talk.url}* ${txtLanguageHintEn}
+            Hello and welcome to the lecture "**${talk.title}**" by *${txtSpeakers}* - *${talk.url}* ${txtLanguageHintEn}
 
-I'm your Signal Angel for this talk. If you have questions please mention me (prefix your question with "**@${txtAngleHandleMatrix}**: ") and I'll relay them to the speaker during the Q&A. Also please tell me your questions during the talk and not all at the end so it's easier for me to catch them.
+            I'm your Signal Angel for this talk. If you have questions please mention me (prefix your question with "**@${txtAngleHandleMatrix}**: ") and I'll relay them to the speaker during the Q&A. Also please tell me your questions during the talk and not all at the end so it's easier for me to catch them.
 
-You can participate through this chat room, and you can ask your questions using the Fediverse using the tag **${txtFediHashtag}** in your toots.
+            You can participate through this chat room, and you can ask your questions using the Fediverse using the tag **${txtFediHashtag}** in your toots.
 
-That’s all. Thank you in advance and enjoy the congress wherever you are!`;
+            That’s all. Thank you in advance and enjoy the congress wherever you are!`;
 
                 talk.saIntroDe = `
-Hallo und willkommen zum Vortrag "**${talk.title}**" gehalten von *${txtSpeakers}* - *${talk.url}* ${txtLanguageHintDe}
+            Hallo und willkommen zum Vortrag "**${talk.title}**" gehalten von *${txtSpeakers}* - *${talk.url}* ${txtLanguageHintDe}
 
-Ich bin der Signal Angel für diesen Talk. Wenn ihr Fragen habt sagt mir Bescheid (schreibt ein "**@${txtAngleHandleMatrix}**: " davor) und ich reiche die Fragen weiter während der Fragerunde am Ende des Vortrags. Bitte stellt eure Fragen direkt wenn ihr sie habt und nicht alle auf einmal am Ende, dann ist das für mich einfacher.
+            Ich bin der Signal Angel für diesen Talk. Wenn ihr Fragen habt sagt mir Bescheid (schreibt ein "**@${txtAngleHandleMatrix}**: " davor) und ich reiche die Fragen weiter während der Fragerunde am Ende des Vortrags. Bitte stellt eure Fragen direkt wenn ihr sie habt und nicht alle auf einmal am Ende, dann ist das für mich einfacher.
 
-Ich danke euch und wünsche viel Spaß mit dem Talk!
+            Ich danke euch und wünsche viel Spaß mit dem Talk!
 
-Ihr könnt außerdem auch Fragen über das Fediverse stellen, indem ihr den Toot mit dem Tag **${txtFediHashtag}** verseht.`;
+            Ihr könnt außerdem auch Fragen über das Fediverse stellen, indem ihr den Toot mit dem Tag **${txtFediHashtag}** verseht.`;
 
                 talk.saTranslationAdviceEn = `
-Please find live translation/interpretation of #38C3 talks by the excellent @c3lingo team on [https://streaming.c3lingo.org/](https://streaming.c3lingo.org/)
-`;
+            Please find live translation/interpretation of #38C3 talks by the excellent @c3lingo team on [https://streaming.c3lingo.org/](https://streaming.c3lingo.org/)
+            `;
 
                 talk.saEndingEn = `
-Thank you for listening and/or participating at the talk "**${talk.title}**" in #38C3 *${talk.room}* wherever you are!
-`;
+            Thank you for listening and/or participating at the talk "**${talk.title}**" in #38C3 *${talk.room}* wherever you are!
+            `;
 
                 talk.saEndingDe = `
-Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.title}**" auf dem #38c3 in *${talk.room}*, wo immer ihr seid! 
-`;
+            Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.title}**" auf dem #38c3 in *${talk.room}*, wo immer ihr seid! 
+            `;
 
                 return talk;
             };
@@ -113,30 +113,30 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                                     )
                                     .map(
                                         (t) => `
-                                        <h1>${t.title}</h1>
-                                        <h3>Intro, Matrix, en</h3>
-                                        <div>
-                                          <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
-                                          <pre>${stampTalk(t).saIntroEn}</pre>
-                                        </div>
-                                        <h3>Intro, Matrix, de</h3>
-                                        <div>
-                                          <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
-                                          <pre>${stampTalk(t).saIntroDe}</pre>
-                                        </div>
-                                        <h3>Ending, Matrix, en</h3>
-                                        <div>
-                                          <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
-                                          <pre>${stampTalk(t).saEndingEn}</pre>
-                                        </div>
-                                        <h3>Ending, Matrix, de</h3>
-                                        <div>
-                                          <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
-                                          <pre>${stampTalk(t).saEndingDe}</pre>
-                                        </div>
-                                        <hr/>
+                                                    <h1>${t.title}</h1>
+                                                    <h3>Intro, Matrix, en</h3>
+                                                    <div>
+                                                      <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
+                                                      <pre>${stampTalk(t).saIntroEn}</pre>
+                                                    </div>
+                                                    <h3>Intro, Matrix, de</h3>
+                                                    <div>
+                                                      <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
+                                                      <pre>${stampTalk(t).saIntroDe}</pre>
+                                                    </div>
+                                                    <h3>Ending, Matrix, en</h3>
+                                                    <div>
+                                                      <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
+                                                      <pre>${stampTalk(t).saEndingEn}</pre>
+                                                    </div>
+                                                    <h3>Ending, Matrix, de</h3>
+                                                    <div>
+                                                      <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
+                                                      <pre>${stampTalk(t).saEndingDe}</pre>
+                                                    </div>
+                                                    <hr/>
 
-                                        `,
+                                                    `,
                                     )
                                     .join(""),
                             )
@@ -174,6 +174,13 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                 return result;
             }
 
+            // function alterAddressForPersistence() {
+            //     let stateObj = { id: "100" };
+
+            //     window.history.pushState(stateObj, "Page 2");
+            //     // window.history.pushState(stateObj, "Page 2", "/page2.html");
+            // }
+
             window.onload = function () {
                 var matrixhandleFromGet = findGetParameter("matrixhandle");
                 if (
@@ -185,37 +192,55 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                 }
             };
 
-            getJSON(
-                // "https://fahrplan.events.ccc.de/congress/2024/fahrplan/schedule/export/schedule.json",
-                "https://signal.beebase.de/schedule.main.json",
-                function (err, data) {
-                    if (err !== null) {
-                        alert("Something went wrong: " + err);
-                    } else {
-                        schedules.main = data;
-                        triggerSearch();
-                    }
-                },
-            );
-            getJSON(
-                // "https://cfp.cccv.de/38c3-community-stages/schedule/export/schedule.json",
-                "https://signal.beebase.de/schedule.commmunity.json",
-                function (err, data) {
-                    if (err !== null) {
-                        alert("Something went wrong: " + err);
-                        // } else renderData(data);
-                    } else {
-                        schedules.community = data;
-                        triggerSearch();
-                    }
-                },
-            );
+            fetch(
+                "https://fahrplan.events.ccc.de/congress/2024/fahrplan/schedule/export/schedule.json",
+            )
+                .then((resp) => resp.json())
+                .then((data) => {
+                    schedules.main = data;
+                    triggerSearch();
+                })
+                .catch((e) => {
+                    fetch("https://signal.beebase.de/schedule.main.json")
+                        .then((resp) => resp.json())
+                        .then((data) => {
+                            schedules.main = data;
+                            triggerSearch();
+                        })
+                        .catch((e) =>
+                            alert(
+                                "could not load schedule data for main halls",
+                            ),
+                        );
+                });
+
+            fetch(
+                "https://cfp.cccv.de/38c3-community-stages/schedule/export/schedule.json",
+            )
+                .then((resp) => resp.json())
+                .then((data) => {
+                    schedules.community = data;
+                    triggerSearch();
+                })
+                .catch((e) => {
+                    fetch("https://signal.beebase.de/schedule.commmunity.json")
+                        .then((resp) => resp.json())
+                        .then((data) => {
+                            schedules.community = data;
+                            triggerSearch();
+                        })
+                        .catch((e) =>
+                            alert(
+                                "could not load schedule data for main halls",
+                            ),
+                        );
+                });
         </script>
     </head>
     <body>
         <h1>timov Signal Angel Templater</h1>
         <div>
-            Version 0.9.6, released under GPL-2.0, source at
+            Version 0.9.7, released under GPL-2.0, source at
             <a
                 href="https://github.com/timove/sandbox/blob/main/signalangel.html"
                 >GitHub</a
