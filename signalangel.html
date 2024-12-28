@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- version 0.9, timov-->
+<!-- //SPDX-License-Identifier: GPL-2.0 -->
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -8,6 +8,15 @@
 
         <script>
             var schedules = new Object();
+
+            const roomToFediHashtag = [
+                { room: "Saal 1", hashtag: "#38C3eins" },
+                { room: "Saal GLITCH", hashtag: "#38C3glitch" },
+                { room: "Saal ZIGZAG", hashtag: "#38C3zigzag" },
+                { room: "Stage HUFF", hashtag: "#38C3huff" },
+                { room: "Stage YELL", hashtag: "#38C3yell" },
+            ];
+
             var getJSON = function (url, callback) {
                 var xhr = new XMLHttpRequest();
                 xhr.open("GET", url, true);
@@ -29,17 +38,11 @@
             };
 
             var stampTalk = function (talk) {
-                var txtAngleHandleMatrix = "timove";
+                var txtAngleHandleMatrix =
+                    document.getElementById("matrixHandleInput").value;
                 var txtSpeakers = talk.persons
                     .map((p) => p.public_name)
                     .join(", ");
-                const roomToFediHashtag = [
-                    { room: "Saal 1", hashtag: "#38C3eins" },
-                    { room: "Saal GLITCH", hashtag: "#38C3glitch" },
-                    { room: "Saal ZIGZAG", hashtag: "#38C3zigzag" },
-                    { room: "Stage HUFF", hashtag: "#38C3huff" },
-                    { room: "Stage YELL", hashtag: "#38C3yell" },
-                ];
                 var txtFediHashtag = roomToFediHashtag.find(
                     (r) => r.room === talk.room,
                 ).hashtag;
@@ -115,10 +118,11 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                                           <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
                                           <pre>${stampTalk(t).saEndingDe}</pre>
                                         </div>
+                                        <hr/>
 
                                         `,
                                     )
-                                    .join(""),
+                                    .join(),
                             )
                             .join(""),
                     )
@@ -145,7 +149,10 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                 function (err, data) {
                     if (err !== null) {
                         alert("Something went wrong: " + err);
-                    } else schedules.main = data;
+                    } else {
+                        schedules.main = data;
+                        triggerSearch();
+                    }
                 },
             );
             getJSON(
@@ -154,21 +161,43 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                     if (err !== null) {
                         alert("Something went wrong: " + err);
                         // } else renderData(data);
-                    } else schedules.community = data;
+                    } else {
+                        schedules.community = data;
+                        triggerSearch();
+                    }
                 },
             );
         </script>
     </head>
     <body>
         <h1>timov Signal Angel Templater</h1>
+        <div>
+            Version 0.9.1, released under GPL-2.0, source at
+            <a
+                href="https://github.com/timove/sandbox/blob/main/signalangel.html"
+                >GitHub</a
+            >
+        </div>
         <form>
-            <label>Search titles: </label>
-            <input
-                id="searchInput"
-                type="text"
-                onkeyup="triggerSearch();"
-                autofocus
-            />
+            <div>
+                <label>Your Matrix handle: </label>
+                <input
+                    id="matrixHandleInput"
+                    type="text"
+                    value="timove"
+                    onkeyup="triggerSearch();"
+                />
+            </div>
+            <div>
+                <label>Search titles: </label>
+                <input
+                    id="searchInput"
+                    type="text"
+                    onkeyup="triggerSearch();"
+                    value="opening"
+                    autofocus
+                />
+            </div>
         </form>
         <hr />
         <div id="renderTarget"></div>
