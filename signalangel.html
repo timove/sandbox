@@ -145,7 +145,8 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
             });
 
             getJSON(
-                "https://fahrplan.events.ccc.de/congress/2024/fahrplan/schedule/export/schedule.json",
+                // "https://fahrplan.events.ccc.de/congress/2024/fahrplan/schedule/export/schedule.json",
+                "https://signal.beebase.de/schedule.main.json",
                 function (err, data) {
                     if (err !== null) {
                         alert("Something went wrong: " + err);
@@ -156,7 +157,8 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                 },
             );
             getJSON(
-                "https://cfp.cccv.de/38c3-community-stages/schedule/export/schedule.json",
+                // "https://cfp.cccv.de/38c3-community-stages/schedule/export/schedule.json",
+                "https://signal.beebase.de/schedule.commmunity.json",
                 function (err, data) {
                     if (err !== null) {
                         alert("Something went wrong: " + err);
@@ -172,7 +174,7 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
     <body>
         <h1>timov Signal Angel Templater</h1>
         <div>
-            Version 0.9.1, released under GPL-2.0, source at
+            Version 0.9.2, released under GPL-2.0, source at
             <a
                 href="https://github.com/timove/sandbox/blob/main/signalangel.html"
                 >GitHub</a
