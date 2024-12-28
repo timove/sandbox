@@ -46,9 +46,25 @@
                 var txtFediHashtag = roomToFediHashtag.find(
                     (r) => r.room === talk.room,
                 ).hashtag;
+                var txtLanguageHintEn = "";
+                if (talk.language === "en") {
+                    txtLanguageHintEn = ". This talk will be in English. ";
+                }
+                if (talk.language === "de") {
+                    txtLanguageHintEn = ". This talk will be in German. ";
+                }
+                var txtLanguageHintDe = "";
+                if (talk.language === "en") {
+                    txtLanguageHintDe =
+                        ". Dieser Vortrag wird in Englisch sein. ";
+                }
+                if (talk.language === "de") {
+                    txtLanguageHintDe =
+                        ". Dieser Vortrag wird auf Deutsch sein. ";
+                }
 
                 talk.saIntroEn = `
-Hello and welcome to the lecture "**${talk.title}**" by *${txtSpeakers}* - *${talk.url}*
+Hello and welcome to the lecture "**${talk.title}**" by *${txtSpeakers}* - *${talk.url}* ${txtLanguageHintEn}
 
 I'm your Signal Angel for this talk. If you have questions please mention me (prefix your question with "**@${txtAngleHandleMatrix}**: ") and I'll relay them to the speaker during the Q&A. Also please tell me your questions during the talk and not all at the end so it's easier for me to catch them.
 
@@ -57,7 +73,7 @@ You can participate through this chat room, and can you ask your questions using
 That’s all. Thank you in advance and enjoy the congress wherever you are!`;
 
                 talk.saIntroDe = `
-Hallo und willkommen zum Vortrag "**${talk.title}**" gehalten von *${txtSpeakers}* - *${talk.url}*
+Hallo und willkommen zum Vortrag "**${talk.title}**" gehalten von *${txtSpeakers}* - *${talk.url}* ${txtLanguageHintDe}
 
 Ich bin der Signal Angel für diesen Talk. Wenn ihr Fragen habt sagt mir Bescheid (schreibt ein "**@${txtAngleHandleMatrix}**: " davor) und ich reiche die Fragen weiter während der Fragerunde am Ende des Vortrags. Bitte stellt eure Fragen direkt wenn ihr sie habt und nicht alle auf einmal am Ende, dann ist das für mich einfacher.
 
@@ -199,7 +215,7 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
     <body>
         <h1>timov Signal Angel Templater</h1>
         <div>
-            Version 0.9.3, released under GPL-2.0, source at
+            Version 0.9.4, released under GPL-2.0, source at
             <a
                 href="https://github.com/timove/sandbox/blob/main/signalangel.html"
                 >GitHub</a
