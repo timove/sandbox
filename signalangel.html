@@ -71,7 +71,7 @@
                 talk.saIntroEn = `
             Hello and welcome to the lecture "**${talk.title}**" by *${txtSpeakers}* - *${talk.url}* ${txtLanguageHintEn}
 
-            I'm your Signal Angel for this talk. If you have questions please mention me (prefix your question with "**@${txtAngleHandleMatrix}**: ") and I'll relay them to the speaker during the Q&A. Also please tell me your questions during the talk and not all at the end so it's easier for me to catch them.
+            I'm your Signal Angel for this talk. If you have questions please mention me (prefix your question with @${txtAngleHandleMatrix}) and I'll relay them to the speaker during the Q&A. Also please tell me your questions during the talk and not all at the end so it's easier for me to catch them.
 
             You can participate through this chat room, and you can ask your questions using the Fediverse using the tag **${txtFediHashtag}** in your toots.
 
@@ -80,7 +80,7 @@
                 talk.saIntroDe = `
             Hallo und willkommen zum Vortrag "**${talk.title}**" gehalten von *${txtSpeakers}* - *${talk.url}* ${txtLanguageHintDe}
 
-            Ich bin der Signal Angel für diesen Talk. Wenn ihr Fragen habt sagt mir Bescheid (schreibt ein "**@${txtAngleHandleMatrix}**: " davor) und ich reiche die Fragen weiter während der Fragerunde am Ende des Vortrags. Bitte stellt eure Fragen direkt wenn ihr sie habt und nicht alle auf einmal am Ende, dann ist das für mich einfacher.
+            Ich bin der Signal Angel für diesen Talk. Wenn ihr Fragen habt sagt mir Bescheid (schreibt ein @${txtAngleHandleMatrix} davor) und ich reiche die Fragen weiter während der Fragerunde am Ende des Vortrags. Bitte stellt eure Fragen direkt wenn ihr sie habt und nicht alle auf einmal am Ende, dann ist das für mich einfacher.
 
             Ich danke euch und wünsche viel Spaß mit dem Talk!
 
@@ -121,7 +121,7 @@
                                                     <h1>${t.title}</h1>
                                                     <h3>Intro, Matrix, en</h3>
                                                     <div>
-                                                      <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
+                                                      <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard" class="copybutton"/>
                                                       <pre>${stampTalk(t).saIntroEn}</pre>
                                                     </div>
                                                     <h3>Intro, Matrix, de</h3>
@@ -246,6 +246,76 @@
                         );
                 });
         </script>
+        <style>
+            @font-face {
+                font-family: "pilowlava";
+                src: URL("fonts/pilowlava/Fonts/webfonts/Pilowlava-Regular.woff2")
+                    format("woff2");
+            }
+            @font-face {
+                font-family: "spacegrotesk";
+                src: URL("fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-Regular.woff2")
+                    format("woff2");
+                src: URL("fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-Bold.woff2")
+                    format("woff2");
+                src: URL("fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-Light.woff2")
+                    format("woff2");
+                src: URL("fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-Medium.woff2")
+                    format("woff2");
+                /* https://events.ccc.de/congress/2024/infos/styleguide/v1/fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-SemiBold.woff2 */
+                src: URL("fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-SemiBold.woff2")
+                    format("woff2");
+            }
+
+            @font-face {
+                font-family: "space-mono";
+                src: URL("fonts/space-mono/SpaceMono-Regular.ttf")
+                    format("truetype");
+            }
+
+            @font-face {
+                font-family: "uncut-sans";
+                /* src: URL("fonts/uncut-sans/Webfonts/UncutSans-Regular.woff2") */
+                src: URL("https://events.ccc.de/congress/2024/infos/styleguide/v1/fonts/uncut-sans/Webfonts/UncutSans-Regular.woff2")
+                    format("woff2");
+            }
+
+            :root {
+                --color-primary: #ff5053;
+                --color-highlight: #fef2ff;
+                --color-accent-a: #b2aaff;
+                --color-accent-b: #6a5fdb;
+                --color-accent-c: #29114c;
+                --color-accent-d: #261a66;
+                --color-accent-e: #190b2f;
+                --color-background: #0f000a;
+            }
+
+            body {
+                background: var(--color-background);
+                color: var(--color-primary);
+                /* font-family: "uncut-sans", sans; */
+                font-family: "uncut-sans";
+            }
+
+            h1,
+            h2,
+            h3 {
+                color: var(--color-highlight);
+            }
+
+            a {
+                color: var(--color-accent-a);
+            }
+
+            a:visited {
+                color: var(--color-accent-b);
+            }
+
+            /* .copybutton {
+                display: block;
+            } */
+        </style>
     </head>
     <body>
         <h1>timov Signal Angel Templater</h1>
@@ -262,7 +332,7 @@
                 <input
                     id="matrixHandleInput"
                     type="text"
-                    value="timove"
+                    value="timove@matrix.org"
                     onkeyup="triggerSearch();"
                 />
             </div>
