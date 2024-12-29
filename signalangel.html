@@ -6,6 +6,112 @@
         <title>timov Signal Angel Templater</title>
         <meta name="viewport" content="width=device-width,initial-scale=1" />
 
+        <style>
+            @font-face {
+                font-family: "pilowlava";
+                src: URL("fonts/pilowlava/Fonts/webfonts/Pilowlava-Regular.woff2")
+                    format("woff2");
+            }
+            @font-face {
+                font-family: "spacegrotesk";
+                src: URL("fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-Regular.woff2")
+                    format("woff2");
+                src: URL("fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-Bold.woff2")
+                    format("woff2");
+                src: URL("fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-Light.woff2")
+                    format("woff2");
+                src: URL("fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-Medium.woff2")
+                    format("woff2");
+                /* https://events.ccc.de/congress/2024/infos/styleguide/v1/fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-SemiBold.woff2 */
+                src: URL("fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-SemiBold.woff2")
+                    format("woff2");
+            }
+
+            @font-face {
+                font-family: "space-mono";
+                src: URL("fonts/space-mono/SpaceMono-Regular.ttf")
+                    format("truetype");
+            }
+
+            @font-face {
+                font-family: "uncut-sans";
+                /* src: URL("fonts/uncut-sans/Webfonts/UncutSans-Regular.woff2") */
+                src: URL("https://events.ccc.de/congress/2024/infos/styleguide/v1/fonts/uncut-sans/Webfonts/UncutSans-Regular.woff2")
+                    format("woff2");
+            }
+
+            :root {
+                --color-primary: #ff5053;
+                --color-highlight: #fef2ff;
+                --color-accent-a: #b2aaff;
+                --color-accent-b: #6a5fdb;
+                --color-accent-c: #29114c;
+                --color-accent-d: #261a66;
+                --color-accent-e: #190b2f;
+                --color-background: #0f000a;
+            }
+
+            body {
+                background: var(--color-background);
+                color: var(--color-primary);
+                /* font-family: "uncut-sans", sans; */
+                font-family: "uncut-sans";
+            }
+
+            h1,
+            h2,
+            h3 {
+                color: var(--color-highlight);
+            }
+
+            a {
+                color: var(--color-accent-a);
+            }
+
+            a:visited {
+                color: var(--color-accent-b);
+            }
+
+            .copybutton {
+                position: relative;
+                color: var(--color-accent-a);
+            }
+
+            .copybutton::before {
+                background-color: currentColor;
+                mask-position: center;
+                mask-size: 20px;
+                mask-image: URL("https://events.ccc.de/congress/2024/infos/styleguide/v1/assets/icons/32/copy.svg");
+                mask-repeat: no-repeat;
+
+                content: "";
+                position: absolute;
+                left: 10px;
+                top: 0;
+                bottom: 0;
+                width: 20px;
+            }
+
+            .copybutton input {
+                padding: 6px 6px 6px 38px;
+                color: var(--color-accent-a);
+                background: var(--color-accent-d);
+                border: none;
+                outline: none;
+            }
+
+            input[type="text"] {
+                background: var(--color-background);
+                color: var(--color-primary);
+                border: none;
+                border-bottom: 1px solid var(--color-accent-b);
+            }
+            input[type="text"]:focus {
+                outline: none;
+                border-bottom: 1px solid var(--color-accent-a);
+            }
+        </style>
+
         <script>
             var schedules = {
                 main: { schedule: { conference: [] } },
@@ -103,11 +209,35 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                 return talk;
             };
 
+            var renderSnippet = function (header, content) {
+                return `
+                  <h3>${header}</h3>
+                  <div>
+                    <div class="copybutton">
+                      <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
+                    </div>
+                    <pre>${content}</pre>
+                  </div>
+              `;
+            };
+
+            var renderTalk = function (t) {
+                var st = stampTalk(t);
+                return (
+                    `<h1>${t.title}</h1>` +
+                    renderSnippet("Intro, Matrix, en", st.saIntroEn) +
+                    renderSnippet("Intro, Matrix, de", st.saIntroDe) +
+                    renderSnippet("Ending, Matrix, en", st.saEndingEn) +
+                    renderSnippet("Ending, Matrix, de", st.saEndingDe)
+                );
+            };
+
             var renderData = function () {
                 var days = schedules.main.schedule.conference.days.concat(
                     schedules.community.schedule.conference.days,
                 );
                 var searchTerm = document.getElementById("searchInput").value;
+
                 var htmlAll = days
                     .map((d) =>
                         Object.values(d.rooms)
@@ -118,33 +248,7 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                                             .toLowerCase()
                                             .includes(searchTerm.toLowerCase()),
                                     )
-                                    .map(
-                                        (t) => `
-                                                    <h1>${t.title}</h1>
-                                                    <h3>Intro, Matrix, en</h3>
-                                                    <div>
-                                                      <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard" class="copybutton"/>
-                                                      <pre>${stampTalk(t).saIntroEn}</pre>
-                                                    </div>
-                                                    <h3>Intro, Matrix, de</h3>
-                                                    <div>
-                                                      <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
-                                                      <pre>${stampTalk(t).saIntroDe}</pre>
-                                                    </div>
-                                                    <h3>Ending, Matrix, en</h3>
-                                                    <div>
-                                                      <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
-                                                      <pre>${stampTalk(t).saEndingEn}</pre>
-                                                    </div>
-                                                    <h3>Ending, Matrix, de</h3>
-                                                    <div>
-                                                      <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
-                                                      <pre>${stampTalk(t).saEndingDe}</pre>
-                                                    </div>
-                                                    <hr/>
-
-                                                    `,
-                                    )
+                                    .map((t) => renderTalk(t))
                                     .join(""),
                             )
                             .join(""),
@@ -248,81 +352,11 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                         );
                 });
         </script>
-        <style>
-            @font-face {
-                font-family: "pilowlava";
-                src: URL("fonts/pilowlava/Fonts/webfonts/Pilowlava-Regular.woff2")
-                    format("woff2");
-            }
-            @font-face {
-                font-family: "spacegrotesk";
-                src: URL("fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-Regular.woff2")
-                    format("woff2");
-                src: URL("fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-Bold.woff2")
-                    format("woff2");
-                src: URL("fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-Light.woff2")
-                    format("woff2");
-                src: URL("fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-Medium.woff2")
-                    format("woff2");
-                /* https://events.ccc.de/congress/2024/infos/styleguide/v1/fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-SemiBold.woff2 */
-                src: URL("fonts/space-grotesk-1.1.4/webfont/SpaceGrotesk-SemiBold.woff2")
-                    format("woff2");
-            }
-
-            @font-face {
-                font-family: "space-mono";
-                src: URL("fonts/space-mono/SpaceMono-Regular.ttf")
-                    format("truetype");
-            }
-
-            @font-face {
-                font-family: "uncut-sans";
-                /* src: URL("fonts/uncut-sans/Webfonts/UncutSans-Regular.woff2") */
-                src: URL("https://events.ccc.de/congress/2024/infos/styleguide/v1/fonts/uncut-sans/Webfonts/UncutSans-Regular.woff2")
-                    format("woff2");
-            }
-
-            :root {
-                --color-primary: #ff5053;
-                --color-highlight: #fef2ff;
-                --color-accent-a: #b2aaff;
-                --color-accent-b: #6a5fdb;
-                --color-accent-c: #29114c;
-                --color-accent-d: #261a66;
-                --color-accent-e: #190b2f;
-                --color-background: #0f000a;
-            }
-
-            body {
-                background: var(--color-background);
-                color: var(--color-primary);
-                /* font-family: "uncut-sans", sans; */
-                font-family: "uncut-sans";
-            }
-
-            h1,
-            h2,
-            h3 {
-                color: var(--color-highlight);
-            }
-
-            a {
-                color: var(--color-accent-a);
-            }
-
-            a:visited {
-                color: var(--color-accent-b);
-            }
-
-            /* .copybutton {
-                display: block;
-            } */
-        </style>
     </head>
     <body>
         <h1>timov Signal Angel Templater</h1>
         <div>
-            Version 0.9.10, released under GPL-2.0, source at
+            Version 0.9.12, released under GPL-2.0, source at
             <a
                 href="https://github.com/timove/sandbox/blob/main/signalangel.html"
                 >GitHub</a
@@ -349,7 +383,6 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                 />
             </div>
         </form>
-        <hr />
         <div id="renderTarget"></div>
     </body>
 </html>
