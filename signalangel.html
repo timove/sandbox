@@ -75,6 +75,7 @@
             .copybutton {
                 position: relative;
                 color: var(--color-accent-a);
+                cursor: pointer;
             }
 
             .copybutton::before {
@@ -98,6 +99,7 @@
                 background: var(--color-accent-d);
                 border: none;
                 outline: none;
+                cursor: pointer;
             }
 
             input[type="text"] {
@@ -109,6 +111,18 @@
             input[type="text"]:focus {
                 outline: none;
                 border-bottom: 1px solid var(--color-accent-a);
+            }
+
+            #feedback {
+                position: fixed;
+                top: 10px;
+                left: 20%;
+                right: 20%;
+
+                background: var(--color-accent-d);
+                color: var(--color-highlight);
+                padding: 8px;
+                display: none;
             }
         </style>
 
@@ -125,6 +139,16 @@
                 { room: "Stage HUFF", hashtag: "#38C3huff" },
                 { room: "Stage YELL", hashtag: "#38C3yell" },
             ];
+
+            function debounce(func, timeout = 300) {
+                let timer;
+                return (...args) => {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        func.apply(this, args);
+                    }, timeout);
+                };
+            }
 
             var getJSON = function (url, callback) {
                 var xhr = new XMLHttpRequest();
@@ -143,7 +167,13 @@
 
             var copytoclipboard = function (src) {
                 var pre = src.parentNode.parentNode.querySelector("pre");
-                navigator.clipboard.writeText(pre.textContent);
+                navigator.clipboard.writeText(pre.textContent).then(() => {
+                    window.setTimeout(() => {
+                        document.getElementById("feedback").style.display =
+                            "none";
+                    }, 2000);
+                    document.getElementById("feedback").style.display = "block";
+                });
             };
 
             var stampTalk = function (talk) {
@@ -175,50 +205,50 @@
                 }
 
                 talk.saIntroEn = `
-Hello and welcome to the lecture "**${talk.title}**" by *${txtSpeakers}* - *${talk.url}* ${txtLanguageHintEn}
+            Hello and welcome to the lecture "**${talk.title}**" by *${txtSpeakers}* - *${talk.url}* ${txtLanguageHintEn}
 
-I'm your Signal Angel for this talk. If you have questions please mention me (prefix your question with @${txtAngleHandleMatrix}) and I'll relay them to the speaker during the Q&A. Also please tell me your questions during the talk and not all at the end so it's easier for me to catch them.
+            I'm your Signal Angel for this talk. If you have questions please mention me (prefix your question with @${txtAngleHandleMatrix}) and I'll relay them to the speaker during the Q&A. Also please tell me your questions during the talk and not all at the end so it's easier for me to catch them.
 
-You can participate through this chat room, and you can ask your questions using the Fediverse using the tag **${txtFediHashtag}** in your toots.
+            You can participate through this chat room, and you can ask your questions using the Fediverse using the tag **${txtFediHashtag}** in your toots.
 
-That’s all. Thank you in advance and enjoy the congress wherever you are!
-`;
+            That’s all. Thank you in advance and enjoy the congress wherever you are!
+            `;
 
                 talk.saIntroDe = `
-Hallo und willkommen zum Vortrag "**${talk.title}**" gehalten von *${txtSpeakers}* - *${talk.url}* ${txtLanguageHintDe}
+            Hallo und willkommen zum Vortrag "**${talk.title}**" gehalten von *${txtSpeakers}* - *${talk.url}* ${txtLanguageHintDe}
 
-Ich bin der Signal Angel für diesen Talk. Wenn ihr Fragen habt sagt mir Bescheid (schreibt ein @${txtAngleHandleMatrix} davor) und ich reiche die Fragen weiter während der Fragerunde am Ende des Vortrags. Bitte stellt eure Fragen direkt wenn ihr sie habt und nicht alle auf einmal am Ende, dann ist das für mich einfacher.
+            Ich bin der Signal Angel für diesen Talk. Wenn ihr Fragen habt sagt mir Bescheid (schreibt ein @${txtAngleHandleMatrix} davor) und ich reiche die Fragen weiter während der Fragerunde am Ende des Vortrags. Bitte stellt eure Fragen direkt wenn ihr sie habt und nicht alle auf einmal am Ende, dann ist das für mich einfacher.
 
-Ich danke euch und wünsche viel Spaß mit dem Talk!
+            Ich danke euch und wünsche viel Spaß mit dem Talk!
 
-Ihr könnt außerdem auch Fragen über das Fediverse stellen, indem ihr den Toot mit dem Tag **${txtFediHashtag}** verseht.
-`;
+            Ihr könnt außerdem auch Fragen über das Fediverse stellen, indem ihr den Toot mit dem Tag **${txtFediHashtag}** verseht.
+            `;
 
                 talk.saTranslationAdviceEn = `
-Please find live translation/interpretation of #38C3 talks by the excellent @c3lingo team on [https://streaming.c3lingo.org/](https://streaming.c3lingo.org/)
-`;
+            Please find live translation/interpretation of #38C3 talks by the excellent @c3lingo team on [https://streaming.c3lingo.org/](https://streaming.c3lingo.org/)
+            `;
 
                 talk.saEndingEn = `
-Thank you for listening and/or participating at the talk "**${talk.title}**" in #38C3 *${talk.room}* wherever you are!
-`;
+            Thank you for listening and/or participating at the talk "**${talk.title}**" in #38C3 *${talk.room}* wherever you are!
+            `;
 
                 talk.saEndingDe = `
-Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.title}**" auf dem #38c3 in *${talk.room}*, wo immer ihr seid! 
-`;
+            Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.title}**" auf dem #38c3 in *${talk.room}*, wo immer ihr seid! 
+            `;
 
                 return talk;
             };
 
             var renderSnippet = function (header, content) {
                 return `
-                  <h3>${header}</h3>
-                  <div>
-                    <div class="copybutton">
-                      <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
-                    </div>
-                    <pre>${content}</pre>
-                  </div>
-              `;
+                              <h3>${header}</h3>
+                              <div>
+                                <div class="copybutton">
+                                  <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
+                                </div>
+                                <pre>${content}</pre>
+                              </div>
+                          `;
             };
 
             var renderTalk = function (t) {
@@ -258,15 +288,6 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                 document.getElementById("renderTarget").innerHTML = htmlAll;
             };
 
-            function debounce(func, timeout = 300) {
-                let timer;
-                return (...args) => {
-                    clearTimeout(timer);
-                    timer = setTimeout(() => {
-                        func.apply(this, args);
-                    }, timeout);
-                };
-            }
             var triggerSearch = debounce(() => {
                 renderData();
                 alterAddressForPersistence();
@@ -355,8 +376,9 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
     </head>
     <body>
         <h1>timov Signal Angel Templater</h1>
+        <div id="feedback">success, text copied to clipboard</div>
         <div>
-            Version 0.9.13, released under GPL-2.0, source at
+            Version 0.9.14, released under GPL-2.0, source at
             <a
                 href="https://github.com/timove/sandbox/blob/main/signalangel.html"
                 >GitHub</a
