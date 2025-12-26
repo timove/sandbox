@@ -133,11 +133,10 @@
             };
 
             const roomToFediHashtag = [
-                { room: "Saal 1", hashtag: "#38C3eins" },
-                { room: "Saal GLITCH", hashtag: "#38C3glitch" },
-                { room: "Saal ZIGZAG", hashtag: "#38C3zigzag" },
-                { room: "Stage HUFF", hashtag: "#38C3huff" },
-                { room: "Stage YELL", hashtag: "#38C3yell" },
+                { room: "One", hashtag: "#38C3eins" },
+                { room: "Ground", hashtag: "#38C3glitch" },
+                { room: "Zero", hashtag: "#38C3zigzag" },
+                { room: "Fuse", hashtag: "#38C3huff" },
             ];
 
             function debounce(func, timeout = 300) {
@@ -263,9 +262,10 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
             };
 
             var renderData = function () {
-                var days = schedules.main.schedule.conference.days.concat(
-                    schedules.community.schedule.conference.days,
-                );
+                var days = schedules.main.schedule.conference.days;
+                // var days = schedules.main.schedule.conference.days.concat(
+                //     schedules.community.schedule.conference.days,
+                // );
                 var searchTerm = document.getElementById("searchInput").value;
 
                 var htmlAll = days
@@ -330,7 +330,7 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
             };
 
             fetch(
-                "https://fahrplan.events.ccc.de/congress/2024/fahrplan/schedule/export/schedule.json",
+                "https://fahrplan.events.ccc.de/congress/2025/fahrplan/schedules/fahrplan.json",
             )
                 .then((resp) => resp.json())
                 .then((data) => {
@@ -338,7 +338,7 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                     triggerSearch();
                 })
                 .catch((e) => {
-                    fetch("https://signal.beebase.de/schedule.main.json")
+                    fetch("https://signal.beebase.de/fahrplan.json")
                         .then((resp) => resp.json())
                         .then((data) => {
                             schedules.main = data;
@@ -351,34 +351,34 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                         );
                 });
 
-            fetch(
-                "https://cfp.cccv.de/38c3-community-stages/schedule/export/schedule.json",
-            )
-                .then((resp) => resp.json())
-                .then((data) => {
-                    schedules.community = data;
-                    triggerSearch();
-                })
-                .catch((e) => {
-                    fetch("https://signal.beebase.de/schedule.commmunity.json")
-                        .then((resp) => resp.json())
-                        .then((data) => {
-                            schedules.community = data;
-                            triggerSearch();
-                        })
-                        .catch((e) =>
-                            alert(
-                                "could not load schedule data for main halls",
-                            ),
-                        );
-                });
+            // fetch(
+            //     "https://cfp.cccv.de/38c3-community-stages/schedule/export/schedule.json",
+            // )
+            //     .then((resp) => resp.json())
+            //     .then((data) => {
+            //         schedules.community = data;
+            //         triggerSearch();
+            //     })
+            //     .catch((e) => {
+            //         fetch("https://signal.beebase.de/schedule.commmunity.json")
+            //             .then((resp) => resp.json())
+            //             .then((data) => {
+            //                 schedules.community = data;
+            //                 triggerSearch();
+            //             })
+            //             .catch((e) =>
+            //                 alert(
+            //                     "could not load schedule data for main halls",
+            //                 ),
+            //             );
+            //     });
         </script>
     </head>
     <body>
         <h1>timov Signal Angel Templater</h1>
         <div id="feedback">success, text copied to clipboard</div>
         <div>
-            Version 0.9.15, released under GPL-2.0, source at
+            Version 0.9.16, released under GPL-2.0, source at
             <a
                 href="https://github.com/timove/sandbox/blob/main/signalangel.html"
                 >GitHub</a
@@ -391,7 +391,7 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                     id="matrixHandleInput"
                     type="text"
                     value="timove@matrix.org"
-                    onkeyup="triggerSearch();"
+                    onkeyup="triggerSearch()"
                 />
             </div>
             <div>
@@ -399,7 +399,7 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                 <input
                     id="searchInput"
                     type="text"
-                    onkeyup="triggerSearch();"
+                    onkeyup="triggerSearch()"
                     value="opening"
                     autofocus
                 />
