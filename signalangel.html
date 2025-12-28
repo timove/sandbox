@@ -1,5 +1,6 @@
 <!doctype html>
 <!-- //SPDX-License-Identifier: GPL-2.0 -->
+<!-- URLs für den Fahrplan gab's 2025 beim VOC unter https://c3voc.de/wiki/events:39c3:schedule -->
 <html lang="en">
     <head>
         <meta charset="utf-8" />
@@ -224,7 +225,11 @@ Ihr könnt außerdem auch Fragen über das Fediverse stellen, indem ihr den Toot
 `;
 
                 talk.saTranslationAdviceEn = `
-Please find live translation/interpretation of #39C3 talks by the excellent @c3lingo team on [https://streaming.c3lingo.org/](https://streaming.c3lingo.org/)
+Please find live translation/interpretation of #39C3 talks by the excellent @c3lingo:matrix.org team on [https://audio.c3lingo.org/](https://audio.c3lingo.org/)
+`;
+
+                talk.saTranslationAdviceDe = `
+Live Übersetzungen für diesen Vortrag werden vom exzellentem Team von @c3lingo:matrix.org bereitgestellt unter [https://audio.c3lingo.org/](https://audio.c3lingo.org/)
 `;
 
                 talk.saEndingEn = `
@@ -240,14 +245,14 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
 
             var renderSnippet = function (header, content) {
                 return `
-                              <h3>${header}</h3>
-                              <div>
-                                <div class="copybutton">
-                                  <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
-                                </div>
-                                <pre>${content}</pre>
-                              </div>
-                          `;
+                                          <h3>${header}</h3>
+                                          <div>
+                                            <div class="copybutton">
+                                              <input type="button" onclick="copytoclipboard(this)" value="copy to clipboard"/>
+                                            </div>
+                                            <pre>${content}</pre>
+                                          </div>
+                                      `;
             };
 
             var renderTalk = function (t) {
@@ -257,7 +262,16 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                     renderSnippet("Intro, Matrix, en", st.saIntroEn) +
                     renderSnippet("Intro, Matrix, de", st.saIntroDe) +
                     renderSnippet("Ending, Matrix, en", st.saEndingEn) +
-                    renderSnippet("Ending, Matrix, de", st.saEndingDe)
+                    renderSnippet("Ending, Matrix, de", st.saEndingDe) +
+                    renderSnippet(
+                        "Hint for c3lingo live translations, en",
+                        st.saTranslationAdviceEn,
+                    ) +
+                    renderSnippet(
+                        "Hinweis auf c3lingo live Übersetzungen, de",
+                        st.saTranslationAdviceDe,
+                    )
+                    // https://audio.c3lingo.org/
                 );
             };
 
@@ -378,7 +392,7 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
         <h1>timov Signal Angel Templater</h1>
         <div id="feedback">success, text copied to clipboard</div>
         <div>
-            Version 0.9.17, released under GPL-2.0, source at
+            Version 0.9.18, released under GPL-2.0, source at
             <a
                 href="https://github.com/timove/sandbox/blob/main/signalangel.html"
                 >GitHub</a
@@ -390,7 +404,7 @@ Vielen Dank für euer Zuhören/Zuschauen und den Input für den Talk "**${talk.t
                 <input
                     id="matrixHandleInput"
                     type="text"
-                    value="timove@matrix.org"
+                    value="timove:matrix.org"
                     onkeyup="triggerSearch()"
                 />
             </div>
